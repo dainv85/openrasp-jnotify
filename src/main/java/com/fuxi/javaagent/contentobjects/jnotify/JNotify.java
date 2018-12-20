@@ -46,7 +46,8 @@ public class JNotify {
     public static final int FILE_DELETED = 0x2;
     public static final int FILE_MODIFIED = 0x4;
     public static final int FILE_RENAMED = 0x8;
-    public static final int FILE_ANY = FILE_CREATED | FILE_DELETED | FILE_MODIFIED | FILE_RENAMED;
+    public static final int FILE_WRITE_COMPLETED = 0x10;
+    public static final int FILE_ANY = FILE_CREATED | FILE_DELETED | FILE_MODIFIED | FILE_RENAMED | FILE_WRITE_COMPLETED;
 
     private static IJNotify _instance;
     private static boolean nativeLibraryLoaded;

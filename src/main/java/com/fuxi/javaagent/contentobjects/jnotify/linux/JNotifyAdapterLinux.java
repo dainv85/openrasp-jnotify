@@ -112,6 +112,11 @@ public class JNotifyAdapterLinux implements IJNotify
 			linuxMask |= JNotify_linux.IN_MOVED_FROM;
 			linuxMask |= JNotify_linux.IN_MOVED_TO;
 		}
+		if ((mask & JNotify.FILE_WRITE_COMPLETED) != 0)
+		{
+			linuxMask |= JNotify_linux.IN_CLOSE_WRITE;
+			linuxMask |= JNotify_linux.IN_CLOSE_NOWRITE;
+		}
 
 		// if watching subdirs, listen on create anyway.
 		// to know when new sub directories are created.
@@ -360,6 +365,15 @@ public class JNotifyAdapterLinux implements IJNotify
 						watchData.removeFromParent();
 					}
 				}
+				else
+				if ((linuxMask & JNotify_linux.IN_CLOSE_WRITE) != 0) {
+					watchData.notifyFileWriteCompleted(name);
+				}
+				else
+				if ((linuxMask & JNotify_linux.IN_CLOSE_NOWRITE) != 0) {
+					watchData.notifyFileWriteCompleted(name);
+				}
+
 			}
 			else
 			{
@@ -479,6 +493,13 @@ public class JNotifyAdapterLinux implements IJNotify
 		public void renaming(int cookie, String name)
 		{
 			_cookieToOldName.put(Integer.valueOf(cookie), getOutName(name));
+		}
+
+		public void notifyFileWriteCompleted(String name)
+		{
+			String outRoot = getOutRoot();
+			String outName = getOutName(name);
+			_listener.fileWriteCompleted(getParentWatchID(), outRoot, outName);
 		}
 
 		public void notifyFileRenamed(String name, int cookie)

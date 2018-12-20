@@ -17,4 +17,8 @@ public class JNotifyAdapter implements JNotifyListener
 	public void fileRenamed(int wd, String rootPath, String oldName, String newName)
 	{
 	}
+
+	public void fileWriteCompleted(int wd, String rootPath, String name) {
+
+	}
 }
