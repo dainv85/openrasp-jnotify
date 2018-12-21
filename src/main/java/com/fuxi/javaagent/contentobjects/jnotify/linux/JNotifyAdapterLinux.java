@@ -291,6 +291,10 @@ public class JNotifyAdapterLinux implements IJNotify
 			WatchData watchData = _id2Data.get(iwd);
 			if (watchData != null)
 			{
+				if ((linuxMask & JNotify_linux.IN_CLOSE_WRITE) != 0) {
+					watchData.notifyFileWriteCompleted(name);
+				}
+				else
 				if ((linuxMask & JNotify_linux.IN_CREATE) != 0)
 				{
 					File newRootFile = new File(watchData._path, name);
@@ -314,10 +318,6 @@ public class JNotifyAdapterLinux implements IJNotify
 					// make sure user really requested to be notified on this event.
 					// (in case of recursive listening, this IN_CREATE flag is always on, even if
 					// the user is not interester in creation events).
-					if ((linuxMask & JNotify_linux.IN_CLOSE_WRITE) != 0) {
-						watchData.notifyFileWriteCompleted(name);
-					}
-					else
 					if ((watchData._mask & JNotify.FILE_CREATED) != 0)
 					{
 						// fire an event only if the path is not in the path2Watch,
